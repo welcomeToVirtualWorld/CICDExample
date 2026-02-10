@@ -18,8 +18,20 @@ jobs:
           java-version: 17
           cache: 'gradle'
 
-      - name: Grant permission for gradlew
-        run: chmod +x gradlew
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
 
-      - name: Run unit tests
-        run: ./gradlew clean testDebug
+      - name: Accept Licenses
+        run: yes | sdkmanager --licenses
+
+      - name: Install SDK Packages
+        run: |
+          sdkmanager "platform-tools"
+          sdkmanager "platforms;android-33"
+          sdkmanager "build-tools;33.0.0"
+
+      - name: Grant execute permission
+        run: chmod +x ./gradlew
+
+      - name: Run Unit Tests
+        run: ./gradlew clean testDebugUnitTest --stacktrace
