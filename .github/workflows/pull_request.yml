@@ -1,4 +1,4 @@
-name: Run test
+name: Android CI + QA Build
 
 on:
   pull_request:
@@ -35,3 +35,20 @@ jobs:
 
       - name: Run Unit Tests
         run: ./gradlew clean testDebugUnitTest --stacktrace
+          
+      # ✅ Build QA APK
+      - name: Build QA APK
+        run: ./gradlew assembleQa
+
+      # ✅ Upload APK as artifact
+      - name: Upload QA APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: qa-apk
+          path: app/build/outputs/apk/qa/app-qa.apk
+
+      - name: Notify Slack
+        run: |
+          curl -X POST -H 'Content-type: application/json' \
+          --data '{"text":"🚀 New QA Build is ready! Download from GitHub Actions."}' \
+          ${{ secrets.SLACK_WEBHOOK_URL }}
