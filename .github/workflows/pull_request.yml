@@ -2,7 +2,8 @@ name: Android CI + QA Build
 
 on:
   pull_request:
-    branches: [main]
+    branches: [ main ]
+    types: [ opened, synchronize ]
 
 jobs:
   build:
