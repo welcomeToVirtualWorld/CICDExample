@@ -18,9 +18,22 @@ android {
     }
 
     buildTypes {
+
+        debug {
+            buildConfigField "String", "BASE_URL", "\"https://test.api.com\""
+            buildConfigField "String", "API_KEY", "\"TEST_KEY_123\""
+        }
+
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+
+        qa {
+            initWith debug
+            matchingFallbacks = ['debug']
+            applicationIdSuffix ".qa"
+            versionNameSuffix "-qa"
         }
     }
     compileOptions {
