@@ -48,6 +48,7 @@ jobs:
           path: app/build/outputs/apk/qa/app-qa.apk
 
       - name: Notify Slack
+        if: success()
         run: |
           curl -X POST -H 'Content-type: application/json' \
           --data '{"text":"🚀 New QA Build is ready! Download from GitHub Actions."}' \
